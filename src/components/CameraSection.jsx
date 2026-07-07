@@ -7,6 +7,7 @@ function CameraSection({
   onToggleCamera,
   onToneChange,
   services,
+  modelStatus,
   error,
   currentTone,
 }) {
