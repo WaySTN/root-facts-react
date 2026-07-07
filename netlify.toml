@@ -1,0 +1,30 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Izinkan kamera, mikrofon, dan clipboard di semua halaman
+    Permissions-Policy = "camera=*, microphone=(), clipboard-write=*"
+    # COOP & COEP dibutuhkan agar SharedArrayBuffer (WebGPU/WASM threading) bisa bekerja
+    Cross-Origin-Opener-Policy = "same-origin"
+    Cross-Origin-Embedder-Policy = "require-corp"
+
+[[headers]]
+  for = "/model/*"
+  [headers.values]
+    # Cache model AI selama 1 tahun (immutable)
+    Cache-Control = "public, max-age=31536000, immutable"
+    Cross-Origin-Resource-Policy = "cross-origin"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# SPA fallback: semua route diarahkan ke index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
