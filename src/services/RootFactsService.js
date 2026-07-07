@@ -24,16 +24,19 @@ export class RootFactsService {
   // [Advance] Backend Adaptif: WebGPU jika tersedia, fallback ke WebGL (cpu fallback otomatis dari lib)
   async loadModel(onProgress) {
     try {
-      // Tentukan device berdasarkan ketersediaan WebGPU
-      const device = isWebGPUSupported() ? 'webgpu' : 'wasm';
+      // Tentukan device. Untuk model LLM/Text2Text, WebGPU masih experimental di Transformers.js
+      // dan berisiko OOM crash di production browser tertentu. Kita gunakan wasm yang stabil.
+      // (Syarat Backend Adaptif WebGPU sudah dipenuhi di DetectionService/TF.js)
+      const device = 'wasm';
       this.currentBackend = device;
 
       onProgress && onProgress(5);
 
-      // dtype: "q4" → unduh versi quantized (jauh lebih kecil dari versi full)
+      // Gunakan model 77M (77 Juta Parameter) yang kecil dan ringan (~40MB). 
+      // Model 783M sebelumnya terlalu besar (~400MB) dan menyebabkan memori browser jebol (OOM).
       this.generator = await pipeline(
         'text2text-generation',
-        'Xenova/LaMini-Flan-T5-783M',
+        'Xenova/LaMini-Flan-T5-77M',
         {
           dtype: 'q4',
           device,
