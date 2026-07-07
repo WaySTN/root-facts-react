@@ -89,9 +89,9 @@ function CameraSection({
     }
   };
 
-  // Tombol aktif begitu Detector (TF.js) selesai load — tidak perlu tunggu Generator
-  const isDetectorReady = !!(services.detector && services.detector.isLoaded());
-  const buttonDisabled = !isDetectorReady;
+  // Tombol aktif begitu kedua model (Detector & Generator) selesai load
+  const isModelReady = modelStatus === 'Model AI Siap';
+  const buttonDisabled = !isModelReady;
   const buttonText = isRunning ? 'Stop Scan' : 'Mulai Scan';
 
   return (
