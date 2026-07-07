@@ -7,9 +7,6 @@
   [headers.values]
     # Izinkan kamera, mikrofon, dan clipboard di semua halaman
     Permissions-Policy = "camera=*, microphone=(), clipboard-write=*"
-    # COOP & COEP dibutuhkan agar SharedArrayBuffer (WebGPU/WASM threading) bisa bekerja
-    Cross-Origin-Opener-Policy = "same-origin"
-    Cross-Origin-Embedder-Policy = "require-corp"
 
 [[headers]]
   for = "/model/*"
